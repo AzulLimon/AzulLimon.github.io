@@ -341,7 +341,12 @@
             <p>Cargando invitación...</p>
         </div>
     </div>
+    <audio id="backgroundAudio" loop muted>
+        <source src="./assets/sirenita.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
     <div class="invitation fade-in" id="invitation" style="display: none;">
+
         <div class="baby-photo">
             <img src="./assets/1.png" alt="Elena - Cumpleaños Uno" loading="lazy">
         </div>
@@ -605,6 +610,40 @@
             }
         }
     });
+
+        const audio = document.getElementById('backgroundAudio');
+        let isInitialized = false;
+        let isPlaying = false;
+
+        audio.volume = 0.25;
+
+        document.addEventListener('click', function() {
+            if (!isInitialized) {
+                // First click - initialize and start playing
+                audio.muted = false;
+                audio.play().then(() => {
+                    isPlaying = true;
+                    isInitialized = true;
+                    document.body.style.animationDuration = '8s, 10s';
+                }).catch(error => {
+                    console.log('Autoplay prevented:', error);
+                });
+            } else {
+                // Subsequent clicks - toggle play/pause
+                if (isPlaying) {
+                    audio.pause();
+                    isPlaying = false;
+                    document.body.style.animationDuration = '15s, 20s';
+                } else {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        document.body.style.animationDuration = '8s, 10s';
+                    }).catch(error => {
+                        console.log('Play failed:', error);
+                    });
+                }
+            }
+        });
     </script>
 </body>
 </html>
